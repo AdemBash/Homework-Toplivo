@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет стоимости топлива</title>
+    <style>
+        .fieldset-green {
+            border: 2px solid green;
+            padding: 10px;
+            width: 350px;
+        }
+        .fieldset-red {
+            border: 2px solid red;
+            padding: 10px;
+            width: 350px;
+        }
+        .fieldset-brown {
+            border: 2px solid brown;
+            padding: 10px;
+            width: 350px;
+        }
+        legend {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="fuelForm" method="get" oninput="calculateTotal()">
+        <h4 style="text-align: center;">Расчет стоимости топлива</h1>
+        <fieldset class="fieldset-green">
+            <legend>Данные топлива</legend>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Тип топлива:</td>
+                        <td>
+                            <input
+                                list="TypeToplivo"
+                                size="26"
+                                type="text"
+                                name="toplivo"
+                                id="fuelType"
+                                placeholder="Тип топлива"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Количество:</td>
+                        <td>
+                            <input
+                                size="26"
+                                type="number"
+                                name="litrov"
+                                id="liters"
+                                placeholder=""
+                            />
+                        </td>
+                        <td>литров</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset class="fieldset-red">
+            <legend>Оплата</legend>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Валюта:</td>
+                        <td>
+                            <input type="radio" name="currency" value="grivnas" id="grivnas" /> Гривны
+                            <input type="radio" name="currency" value="dolars" id="dolars" /> Доллары
+                            <input type="radio" name="currency" value="evros" id="evros" /> Евро
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <fieldset class="fieldset-brown">
+            <legend>Сумма к оплате</legend>
+            <p id="Price">Введите данные для расчета!</p>
+        </fieldset>
+    </form>
+    <datalist id="TypeToplivo">
+        <option value="Бензин" />
+        <option value="Дизель" />
+        <option value="Пропан" />
+        <option value="Электричество" />
+    </datalist>
+
+    <script>
+        function calculateTotal() {
+            const fuelType = document.getElementById('fuelType').value;
+            const liters = parseFloat(document.getElementById('liters').value) || 0;
+            let priceLiter = 0;
+            switch (fuelType) {
+                case 'Бензин':
+                    priceLiter = 50;
+                    break;
+                case 'Дизель':
+                    priceLiter = 45;
+                    break;
+                case 'Пропан':
+                    priceLiter = 30; 
+                    break;
+                case 'Электричество':
+                    priceLiter = 10;
+                    break;
+            }
+            const total = liters * priceLiter;
+            let currency = '';
+            if (document.getElementById('grivnas').checked) currency = 'Гривны';
+            if (document.getElementById('dolars').checked) currency = 'Доллары';
+            if (document.getElementById('evros').checked) currency = 'Евро';
+
+            const totalPrice = document.getElementById('Price');
+            if (total > 0 && currency) {
+                totalPrice.textContent = `Сумма к оплате: ${total.toFixed(2)} ${currency}`;
+            }
+        }
+    </script>
+</body>
+</html>
